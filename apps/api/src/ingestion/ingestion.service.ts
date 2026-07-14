@@ -53,6 +53,14 @@ export class IngestionService {
     return this.documents.get(id);
   }
 
+  listDocuments(): Document[] {
+    return Array.from(this.documents.values());
+  }
+
+  deleteDocument(id: string): boolean {
+    return this.documents.delete(id);
+  }
+
   updateDocumentStatus(id: string, status: Document['status'], extra?: Partial<Document>) {
     const doc = this.documents.get(id);
     if (!doc) return;
