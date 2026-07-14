@@ -39,48 +39,48 @@ Sistema RAG (Retrieval Augmented Generation) para Q&A sobre documentación técn
 │  │ • Embedding  │  │  • Generate  │  │  • Sources     │  │
 │  │ • Bull queue │  │  • Rerank    │  │                │  │
 │  └──────┬───────┘  └──────┬───────┘  └────────┬───────┘  │
-│         │                 │                    │         │
-│         └─────────────────┼────────────────────┘         │
+│         │                 │                   │          │
+│         └─────────────────┼───────────────────┘          │
 │                           │                              │
-│              ┌────────────▼────────────┐                 │
-│              │   LangGraph Pipeline    │                 │
-│              │     (CRAG Pattern)      │                 │
-│              │                         │                 │
-│              │  retrieve ──► grade ──┐ │                 │
-│              │                       │ │                 │
-│              │         ┌─────────────┘ │                 │
-│              │         │ ALL relevant  │                 │
-│              │         ▼               │                 │
-│              │  ┌─ rewrite ◄─ SOME bad │                 │
-│              │  │  (reconsulta)        │                 │
-│              │  └─────► retrieve ──┐   │                 │
-│              │                     │   │                  │
-│              │         ┌──────────┘    │                  │
-│              │         ▼ ALL good      │                  │
-│              │     generate ──► check ──► grounded ✅   │
-│              │                         │                  │
-│              │               └──► regenerate (max 3)     │
-│              └─────────────────────────┘                  │
-│                                                           │
+│              ┌────────────▼───────────────────────────┐  │
+│              │   LangGraph Pipeline                   │  │
+│              │     (CRAG Pattern)                     │  │
+│              │                                        │  │
+│              │  retrieve ──► grade ──┐                │  │
+│              │                       │                │  │
+│              │         ┌─────────────┘                │  │
+│              │         │ ALL relevant                 │  │
+│              │         ▼                              │  │
+│              │  ┌─ rewrite ◄─ SOME bad                │  │
+│              │  │  (reconsulta)                       │  │
+│              │  └─────► retrieve ──┐                  │  │
+│              │                     │                  │  │
+│              │         ┌───────────┘                  │  │
+│              │         ▼ ALL good                     │  │
+│              │     generate ──► check ──► grounded ok │  │
+│              │                                        │  │
+│              │               └──► regenerate (max 3)  │  │
+│              └────────────────────────────────────────┘  │
+│                                                          │
 └──────────────────────┬───────────────────────────────────┘
                        │
 ┌──────────────────────▼───────────────────────────────────┐
-│                    Servicios                              │
-│                                                           │
+│                    Servicios                             │
+│                                                          │
 │  ┌──────────┐  ┌──────────┐  ┌────────────────────────┐  │
 │  │  Qdrant  │  │  Redis   │  │  LangSmith (tracing)   │  │
 │  │  (vec-   │  │  (queue  │  │                        │  │
 │  │  store)  │  │   +cache)│  │  • Trace every step    │  │
-│  │          │  │          │  │  • Evaluate retrieval   │  │
-│  │          │  │          │  │  • Debug pipeline       │  │
+│  │          │  │          │  │  • Evaluate retrieval  │  │
+│  │          │  │          │  │  • Debug pipeline      │  │
 │  └──────────┘  └──────────┘  └────────────────────────┘  │
-│                                                           │
-│  ┌──────────────────────────────────────────────────────┐ │
-│  │  Providers (abstracción con interfaces)              │ │
-│  │  EmbeddingProvider │ VectorStoreProvider             │ │
-│  │  ChatModelProvider │ RerankerProvider                │ │
-│  └──────────────────────────────────────────────────────┘ │
-└───────────────────────────────────────────────────────────┘
+│                                                          │
+│  ┌─────────────────────────────────────────────────────┐ │
+│  │  Providers (abstracción con interfaces)             │ │
+│  │  EmbeddingProvider │ VectorStoreProvider            │ │
+│  │  ChatModelProvider │ RerankerProvider               │ │
+│  └─────────────────────────────────────────────────────┘ │
+└──────────────────────────────────────────────────────────┘
 ```
 
 ## Pipeline RAG (CRAG)
