@@ -33,6 +33,7 @@ coverage/
 # Temp
 tmp/
 temp/
+uploads/
 
 .atl
 
