@@ -12,14 +12,19 @@ export class ChatModelProviderService implements ChatModelProvider {
   private gradingModel: ChatOpenAI;
 
   constructor(configService: ConfigService) {
+    const baseUrl = configService.get<string>('NVIDIA_BASE_URL', 'https://integrate.api.nvidia.com/v1');
+    const apiKey = configService.get<string>('NVIDIA_API_KEY');
+
     this.generationModel = new ChatOpenAI({
-      openAIApiKey: configService.get<string>('OPENAI_API_KEY'),
-      modelName: configService.get<string>('GENERATION_MODEL', 'gpt-4o'),
+      openAIApiKey: apiKey,
+      modelName: configService.get<string>('GENERATION_MODEL', 'nvidia/llama-3.3-nemotron-super-49b-v1'),
+      configuration: { baseURL: baseUrl },
     });
 
     this.gradingModel = new ChatOpenAI({
-      openAIApiKey: configService.get<string>('OPENAI_API_KEY'),
-      modelName: configService.get<string>('GRADING_MODEL', 'gpt-4o-mini'),
+      openAIApiKey: apiKey,
+      modelName: configService.get<string>('GRADING_MODEL', 'nvidia/nemotron-mini-4b-instruct'),
+      configuration: { baseURL: baseUrl },
     });
   }
 

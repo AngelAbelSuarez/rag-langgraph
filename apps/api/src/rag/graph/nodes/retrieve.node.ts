@@ -10,7 +10,8 @@ export function createRetrieveNode(
   rerankerProvider: RerankerProvider,
 ) {
   return async (state: typeof RagState.State) => {
-    const embedding = await embeddingProvider.embed(state.rewrittenQuestion || state.question);
+    const query = state.rewrittenQuestion || state.question;
+    const embedding = await embeddingProvider.embed(query);
 
     const scored = await vectorStoreProvider.search(embedding, undefined, 10);
 
@@ -25,23 +26,12 @@ export function createRetrieveNode(
       },
     }));
 
-    const reranked = await rerankerProvider.rerank(
-      state.rewrittenQuestion || state.question,
-      documents,
-    );
-
-    const topK = reranked.slice(0, 5);
-    const relevantDocuments: Document[] = topK.map(r => new Document({
-      pageContent: r.document.pageContent,
-      metadata: {
-        ...r.document.metadata,
-        relevanceScore: r.relevanceScore,
-      },
-    }));
+    const reranked = await rerankerProvider.rerank(query, documents);
+    const top5 = reranked.slice(0, 5);
 
     return {
       documents,
-      relevantDocuments,
+      relevantDocuments: top5.map(r => r.document),
       retrievalAttempts: 1,
     };
   };
