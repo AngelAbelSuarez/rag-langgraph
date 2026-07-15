@@ -1,6 +1,7 @@
 import { NavLink, Outlet } from 'react-router-dom';
 import { MessageSquare, FileText, Plus } from 'lucide-react';
 import { Button } from './ui/button';
+import { ThemeToggle } from './ThemeToggle';
 import { cn } from '@/lib/utils';
 import { useChatStore } from '@/store/chat.store';
 
@@ -46,7 +47,7 @@ export function Layout() {
           </NavLink>
         </nav>
 
-        <div className="p-3">
+        <div className="p-3 space-y-2">
           <Button
             variant="outline"
             size="sm"
@@ -56,6 +57,10 @@ export function Layout() {
             <Plus className="w-4 h-4" />
             Nueva conversación
           </Button>
+          <div className="flex items-center justify-between">
+            <span className="text-xs text-muted-foreground">Tema</span>
+            <ThemeToggle />
+          </div>
         </div>
       </aside>
 
