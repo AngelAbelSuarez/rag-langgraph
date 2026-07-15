@@ -8,9 +8,11 @@ export class EmbeddingProviderService implements EmbeddingProvider {
   private embeddings: OpenAIEmbeddings;
 
   constructor(configService: ConfigService) {
+    const baseUrl = configService.get<string>('NVIDIA_BASE_URL', 'https://integrate.api.nvidia.com/v1');
     this.embeddings = new OpenAIEmbeddings({
-      openAIApiKey: configService.get<string>('OPENAI_API_KEY'),
-      modelName: configService.get<string>('EMBEDDING_MODEL', 'text-embedding-3-small'),
+      openAIApiKey: configService.get<string>('NVIDIA_API_KEY'),
+      modelName: configService.get<string>('EMBEDDING_MODEL', 'nvidia/nv-embedcode-7b-v1'),
+      configuration: { baseURL: baseUrl },
     });
   }
 

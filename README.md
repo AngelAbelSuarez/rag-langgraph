@@ -10,9 +10,9 @@ Sistema RAG (Retrieval Augmented Generation) para Q&A sobre documentación técn
 | Frontend | React 19 + Vite + TanStack Query + Zustand + Tailwind |
 | Pipeline RAG | LangChain + LangGraph (CRAG pattern) |
 | Vector store | Qdrant |
-| Embeddings | OpenAI text-embedding-3-small |
-| Reranking | Cohere Rerank |
-| LLM | GPT-4o-mini (grading) / GPT-4o (generation) |
+| Embeddings | NVIDIA nv-embedcode-7b-v1 |
+| Reranking | NVIDIA nv-rerank-qa-mistral-4b:1 |
+| LLM | NVIDIA nemotron-mini-4b-instruct (grading) / llama-3.3-nemotron-super-49b-v1 (generation) |
 | Cola de ingesta | Bull + Redis |
 | Tracing | LangSmith |
 | Infra | Docker Compose |
@@ -87,10 +87,10 @@ Sistema RAG (Retrieval Augmented Generation) para Q&A sobre documentación técn
 
 El flujo de Q&A usa el patrón **Corrective RAG** implementado con LangGraph:
 
-1. **retrieve** — búsqueda semántica en Qdrant + reranking con Cohere
-2. **grade** — GPT-4o-mini evalúa si los chunks recuperados son relevantes
+1. **retrieve** — búsqueda semántica en Qdrant + reranking con NVIDIA nv-rerank-qa-mistral-4b:1
+2. **grade** — NVIDIA nemotron-mini-4b-instruct evalúa si los chunks recuperados son relevantes
 3. **rewrite** — si hay chunks irrelevantes, reformula la consulta y reintenta
-4. **generate** — GPT-4o genera respuesta con contexto relevante
+4. **generate** — NVIDIA llama-3.3-nemotron-super-49b-v1 genera respuesta con contexto relevante
 5. **hallucination check** — verifica que la respuesta esté grounded en los sources
 6. **regenerate** — si alucinó, reintenta (máximo 3 intentos)
 
