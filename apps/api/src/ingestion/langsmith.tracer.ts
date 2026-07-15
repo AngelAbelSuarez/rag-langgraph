@@ -14,18 +14,14 @@ export class LangSmithTracer {
       name: 'Ingestion Pipeline',
       run_type: 'chain',
       inputs: { documentId },
-      apiKey: this.configService.get<string>('LANGSMITH_API_KEY'),
-      projectName: this.configService.get<string>('LANGSMITH_PROJECT'),
+      project_name: this.configService.get<string>('LANGSMITH_PROJECT'),
     });
 
     try {
       await fn(runTree);
-      await runTree.end({ outputs: { documentId, status: 'ready' } });
+      await runTree.end({ documentId, status: 'ready' });
     } catch (error) {
-      await runTree.end({
-        outputs: { documentId, status: 'failed' },
-        error: String(error),
-      });
+      await runTree.end({ documentId, status: 'failed' }, String(error));
       throw error;
     } finally {
       await runTree.postRun();

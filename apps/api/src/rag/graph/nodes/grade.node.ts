@@ -1,10 +1,6 @@
 import { Document } from '@langchain/core/documents';
+import { ChatMessage } from '@rag/shared';
 import { ChatModelProvider } from '../../../common/providers/chat-model.interface.js';
-
-interface ChatMessage {
-  role: 'user' | 'assistant';
-  content: string;
-}
 import { RagState } from '../state.js';
 
 export function createGradeNode(
@@ -15,7 +11,7 @@ export function createGradeNode(
     const irrelevant: Document[] = [];
 
     for (const doc of state.relevantDocuments) {
-      const messages: ChatMessage[] = [{ role: 'user', content: state.question }];
+      const messages: ChatMessage[] = [{ role: 'user', content: state.question, timestamp: new Date().toISOString() }];
       const result = await chatModelProvider.generate(
         'Evalúa si el siguiente documento responde la pregunta. Responde SOLO YES o NO.',
         messages,

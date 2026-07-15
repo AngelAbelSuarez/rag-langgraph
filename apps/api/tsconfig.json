@@ -3,8 +3,10 @@
   "compilerOptions": {
     "outDir": "./dist",
     "rootDir": "./src",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
     "paths": {
-      "@rag/shared": ["../../packages/shared/src"]
+      "@rag/shared": ["../../packages/shared/src/index.ts"]
     }
   },
   "include": ["src/**/*"]

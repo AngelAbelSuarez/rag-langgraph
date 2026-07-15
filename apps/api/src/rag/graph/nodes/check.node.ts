@@ -1,9 +1,5 @@
+import { ChatMessage } from '@rag/shared';
 import { ChatModelProvider } from '../../../common/providers/chat-model.interface.js';
-
-interface ChatMessage {
-  role: 'user' | 'assistant';
-  content: string;
-}
 import { RagState } from '../state.js';
 
 export function createCheckNode(
@@ -17,6 +13,7 @@ export function createCheckNode(
     const messages: ChatMessage[] = [{
       role: 'user',
       content: `Pregunta: ${state.question}\n\nRespuesta a evaluar: ${state.generation}`,
+      timestamp: new Date().toISOString(),
     }];
 
     const result = await chatModelProvider.generate(
