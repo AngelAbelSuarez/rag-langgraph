@@ -7,7 +7,7 @@ const config = {
   transform: {
     '^.+\\.(t|j)s$': ['ts-jest', {
       tsconfig: path.resolve(__dirname, 'tsconfig.test.json'),
-      diagnostics: false,
+      diagnostics: { ignoreCodes: [151002] },
     }],
   },
   collectCoverageFrom: ['**/*.(t|j)s'],

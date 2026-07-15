@@ -27,16 +27,11 @@ export class IngestionConsumer {
       this.ingestionService.updateDocumentStatus(documentId, 'processing');
 
       const text = await this.extractText(filePath, sourceType);
-      runTree.addEvent('text_extracted');
 
       const chunks = await this.chunkingService.chunk(text, documentId, sourceType);
-      runTree.addEvent('chunked', { chunksCount: chunks.length });
 
       const texts = chunks.map(c => c.content);
-      const embedStart = Date.now();
       const embeddings = await this.embeddingProvider.embedBatch(texts);
-      const embedTime = Date.now() - embedStart;
-      runTree.addEvent('embedded', { embedTime });
 
       const points: Point[] = chunks.map((chunk, i) => ({
         id: chunk.id,
@@ -44,10 +39,7 @@ export class IngestionConsumer {
         payload: { ...chunk.metadata, content: chunk.content },
       }));
 
-      const upsertStart = Date.now();
       await this.vectorStore.upsert(points);
-      const upsertTime = Date.now() - upsertStart;
-      runTree.addEvent('upserted', { upsertTime });
 
       this.ingestionService.updateDocumentStatus(documentId, 'ready');
     });

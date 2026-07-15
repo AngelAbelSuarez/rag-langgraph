@@ -1,0 +1,15 @@
+{
+  "name": "rag-langgraph",
+  "private": true,
+  "devDependencies": {
+    "concurrently": "^9.1.0"
+  },
+  "scripts": {
+    "start:dev": "pnpm --filter @rag/api start:dev",
+    "dev": "concurrently -n api,web -c cyan,green \"pnpm --filter @rag/api start:dev\" \"pnpm --filter @rag/web dev\"",
+    "dev:api": "pnpm --filter @rag/api start:dev",
+    "dev:web": "pnpm --filter @rag/web dev",
+    "build": "pnpm -r run build",
+    "test": "pnpm --filter @rag/api run test"
+  }
+}
