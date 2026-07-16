@@ -7,7 +7,7 @@ export function ChatContainer() {
 
   return (
     <div className="flex-1 flex flex-col">
-      <header className="border-b px-6 py-3">
+      <header className="border-b px-4 md:px-6 py-3">
         <h2 className="text-sm font-semibold text-muted-foreground">Chat</h2>
       </header>
       <MessageList messages={messages} isStreaming={isStreaming} />
